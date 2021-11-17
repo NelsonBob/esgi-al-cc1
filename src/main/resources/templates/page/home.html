@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+    <head th:replace="~{base :: head(title = 'Accueil')}">
+    </head>
+
+    <body>
+
+        <nav th:replace="~{base :: navigation}"></nav>
+
+        <div class="container">
+            <div> <strong><b th:text="${execInfo.now.time}"></b></strong></div>
+
+            <div class="starter-template">
+                <h1>Mon ESGI AL CC en ligne</h1>
+                <p class="lead">Grace au digital vous pouvez enregistrer <br/> votre certifcat en ligne ..</p>
+                <br/>
+                <p> <img alt="image" src="/images/phone.png" th:scr="@{/images/phone.png}" class="img-responsive" width="250" style="margin:auto"> </p>
+            </div>
+
+        </div><!-- /.container -->
+
+
+        <div	 th:replace="~{fragments/jsfooter :: body}"></div>
+
+    </body>
+
+</html>

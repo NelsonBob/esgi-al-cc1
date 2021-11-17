@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="utf-8">
+
+    </head>
+
+    <body th:fragment="body">
+
+        <div class="footer">
+            <footer style="background-color: #245269; padding: 15px;">
+                <div class="container">
+                    <div class="col-md-6">
+                        2021 ESGI
+                        <span sec:authorize="isAuthenticated()">
+                            <br/>
+                            Utilisateur connecté: <span sec:authentication="name"></span>
+                            <br/>
+                        </span>
+                    </div>
+                    <div class="col-md-6" style="float: right" sec:authorize="isAuthenticated()"><a th:href="@{/logout}" style="float: right; color: whitesmoke"><i class="fa fa-sign-out-alt" aria-hidden="true"></i>Déconnexion</a></div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+        <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+    </body>
+
+</html>

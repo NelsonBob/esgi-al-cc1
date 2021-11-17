@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="~{base :: head(title = 'Creation de compte')}">
+</head>
+
+<body>
+
+    <nav th:replace="~{base :: navigation}"></nav>
+    <div class="container span40">
+        <div> <strong><b th:text="${execInfo.now.time}"></b></strong></div>
+        <br>
+        <br>
+        <div class="row">
+            <div id="logreg-forms">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <center>
+                            <div th:if="${param.success}">
+                                <div class="alert alert-info">
+                                    You've successfully registered to our awesome app!
+                                </div>
+                            </div>
+                        </center>
+                        <center>
+                            <i class="fa fa-user fa-7x" style="margin-top:  -40px"></i>
+                        </center>
+                        <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> S'Inscrire</h1>
+                        <form th:action="@{/registration}" autocomplete="off" th:object="${memberForm}" method="post">
+                            <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+                                th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation error</p>
+                            <div class="form-group">
+                                <label>Nom *</label>
+                                <input id="firstName" type="text" th:field="*{firstName}" class="form-control"
+                                    placeholder="Nom" autofocus="" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Prénom</label>
+                                <input id="lastName" type="text" th:field="*{lastName}" class="form-control"
+                                    placeholder="Prénom" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Mr/Mme *</label>
+                                <select id="civilite" class="form-control" th:field="*{civilite}">
+                                    <option th:each="p:${listCivilite}" th:value="${p}" th:text="${p}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Téléphone *</label>
+                                <input type="tel" id="telephone" class="form-control" th:field="*{telephone}"
+                                    placeholder="Téléphone" />
+                            </div>
+                            <div class="form-group">
+                                <label>Adresse e-mail *</label>
+                                <input type="email" id="email" name="email" class="form-control" th:field="*{email}"
+                                    th:classappend="${#fields.hasErrors('email')}? 'has-error':''"
+                                    placeholder="Adresse e-mail" required />
+                                <p class="error-message" th:each="error: ${#fields.errors('email')}" th:text="${error}">
+                                    Validation error</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Mot de passe *</label>
+                                <input type="password" id="password"
+                                    title="Password must contain at least 6 characters, including UPPER/lowercase and numbers."
+                                    name="password" class="form-control" th:field="*{password}" required
+                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" placeholder="Mot de passe" />
+
+                                <button class="unmask" type="button" style="
+z-index: 67;
+    width: 19px;
+    height: 19px;
+    background: #c85e17;
+    border-radius: 50%;
+    float: right;
+    margin-top: -27px;
+    position: absolute;
+    right: 515px;"></button>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Mot de passe *</label>
+                                <input type="password" id="confirmPass" class="form-control" required
+                                    title="Please enter the same Password as above."
+                                    placeholder="Répéter le mot de passe" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                                    name="confirmPass" />
+                            </div>
+
+                            <button class="btn btn-success btn-block" type="submit"><i class="fas fa-user-plus"></i>
+                                S'inscrire</button>
+                            <a th:href="@{/login}" id="cancel_reset">
+                                <i class="fa fa-arrow-left"></i>
+                                Retour</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div th:replace="~{fragments/jsfooter :: body}"></div>
+
+    <script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // JavaScript form validation
+
+            var checkPassword = function (str) {
+                var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+                return re.test(str);
+            };
+
+            var checkForm = function (e) {
+
+                if (this.password.value != "" && this.password.value == this.confirmPass.value) {
+                    if (!checkPassword(this.password.value)) {
+                        alert("The password you have entered is not valid!");
+                        this.password.focus();
+                        e.preventDefault();
+                        return;
+                    }
+                } else {
+                    alert("Error: Please check that you've entered and confirmed your password!");
+                    this.password.focus();
+                    e.preventDefault();
+                    return;
+                }
+            };
+
+            var myForm = document.getElementById("myForm");
+            myForm.addEventListener("submit", checkForm, true);
+
+            // HTML5 form validation
+
+            var supports_input_validity = function () {
+                var i = document.createElement("input");
+                return "setCustomValidity" in i;
+            }
+
+            if (supports_input_validity()) {
+
+                var pwd1Input = document.getElementById("password");
+                pwd1Input.setCustomValidity(pwd1Input.title);
+
+                var pwd2Input = document.getElementById("confirmPass");
+
+                // input key handlers
+
+                pwd1Input.addEventListener("keyup", function (e) {
+                    this.setCustomValidity(this.validity.patternMismatch ? pwd1Input.title : "");
+                    if (this.checkValidity()) {
+                        pwd2Input.pattern = RegExp.escape(this.value);
+                        pwd2Input.setCustomValidity(pwd2Input.title);
+                    } else {
+                        pwd2Input.pattern = this.pattern;
+                        pwd2Input.setCustomValidity("");
+                    }
+                }, false);
+
+                pwd2Input.addEventListener("keyup", function (e) {
+                    this.setCustomValidity(this.validity.patternMismatch ? pwd2Input.title : "");
+                }, false);
+
+            }
+
+        }, false);
+
+        $('.unmask').on('click', function () {
+
+            if ($(this).prev('input').attr('type') == 'password')
+                changeType($(this).prev('input'), 'text');
+
+            else
+                changeType($(this).prev('input'), 'password');
+
+            return false;
+        });
+
+        // x = élément du DOM, type = nouveau type à attribuer
+        function changeType(x, type) {
+            if (x.prop('type') == type)
+                return x; // ça serait facile.
+            try {
+                // Une sécurité d'IE empêche ceci
+                return x.prop('type', type);
+            } catch (e) {
+                // On tente de recréer l'élément
+                // En créant d'abord une div
+                var html = $("<div>").append(x.clone()).html();
+                var regex = /type=(\")?([^\"\s]+)(\")?/;
+                // la regex trouve type=text ou type="text"
+                // si on ne trouve rien, on ajoute le type à la fin, sinon on le remplace
+                var tmp = $(html.match(regex) == null ?
+                    html.replace(">", ' type="' + type + '">') :
+                    html.replace(regex, 'type="' + type + '"'));
+
+                // on rajoute les vieilles données de l'élément
+                tmp.data('type', x.data('type'));
+                var events = x.data('events');
+                var cb = function (events) {
+                    return function () {
+                        //Bind all prior events
+                        for (i in events) {
+                            var y = events[i];
+                            for (j in y)
+                                tmp.bind(i, y[j].handler);
+                        }
+                    }
+                }(events);
+                x.replaceWith(tmp);
+                setTimeout(cb, 10); // On attend un peu avant d'appeler la fonction
+                return tmp;
+            }
+        }
+    </script>
+</body>
+
+</html>

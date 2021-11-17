@@ -1,0 +1,10 @@
+
+.error-message {
+    color: red;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.error-message:first-letter {
+    text-transform: capitalize;
+}

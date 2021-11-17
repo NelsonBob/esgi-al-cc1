@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="~{base :: head(title = 'Information du compte')}">
+</head>
+
+<body>
+
+    <nav th:replace="~{base :: navigation}"></nav>
+    <div class="container">
+        <div> <strong><b th:text="${execInfo.now.time}"></b></strong></div>
+        <div class="row">
+            <div class="col-md-6">
+                <p> <br /></p>
+                <form name="f" th:action="@{/changeinfos}" th:object="${memberForm}" method="post" class="form-signin">
+                    <div th:if="${param.success}">
+                        <div class="alert alert-info">
+                            You've successfully changed infos
+                        </div>
+                    </div>
+                    <fieldset>
+                        <h3>Modifier informations</h3>
+                        <hr>
+                        <label for="firstName">Nom</label>:
+                        <input type="text" id="firstName" class="form-control" th:field="*{firstName}"
+                            placeholder="firstName" />
+                        <label for="lastName">Prenom</label>:
+                        <input type="text" id="lastName" class="form-control" th:field="*{lastName}"
+                            placeholder="lastName" />
+
+                        <label for="civilite">Civilté</label>
+                        <select id="civilite" class="form-control" th:field="*{civilite}">
+                            <option th:each="p:${listCivilite}" th:value="${p}" th:text="${p}"></option>
+                        </select>
+                        <label for="telephone">Téléphone</label>
+                        <input type="text" id="telephone" name="telephone" class="form-control"
+                            th:field="*{telephone}" />
+                        <div class="form-actions">
+                            <br />
+                            <a th:href="@{/}" class="btn btn-primary"><i class="fa fa-arrow-left"></i>Annuler</a>
+                            <button type="submit" class="btn btn-success" style="margin-left:72px;"><i
+                                    class="fa fa-save"></i>Continuer</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <p> <br /><br /><br /></p>
+                <hr />
+                <div class="list-group">
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Nom d'utilisateur</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.firstName}"></p>
+                    </span>
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Prenom</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.lastName}"></p>
+                    </span>
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Civilté</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.civilite}"></p>
+                    </span>
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Téléphone</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.telephone}"></p>
+                    </span>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div th:replace="~{fragments/jsfooter :: body}"></div>
+
+</body>
+
+</html>

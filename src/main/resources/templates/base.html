@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:fragment="head(title)">
+    <link rel="shortcut icon" type="image/ico" th:href="@{/images/favicon.ico}">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="/">
+    <meta name="author" content="" />
+
+
+    <title th:text="${title}">B Certificate</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet"
+        type="text/css" />
+
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="../static/css/theme.min.css" th:href="@{/css/theme.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../static/css/starter-template.css" th:href="@{/css/starter-template.css}" rel="stylesheet">
+    <link href="../static/css/font.css" th:href="@{/css/font.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top navb" role="navigation" th:fragment="navigation">
+        <div class="container">
+            <div class=" navbar-header">
+                <a class="navbar-brand" href="index.html#" th:href="@{/}">ESGI AL</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html#" th:href="@{/}">Accueil</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a href="index.html#about" th:href="@{/login}">Connexion</a>
+                    </li>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a sec:authorize="isAuthenticated()" href="#" class="dropdown-toggle"
+                            data-toggle="dropdown">Profil<b class="caret"></b></a>
+                        <ul sec:authorize="isAuthenticated()" class="dropdown-menu">
+                            <li><a href="#" th:href="@{/changeinfos}">Parametre des informations</a></li>
+                            <li><a href="#" th:href="@{/member/password}">Changer le mot de passe</a></li>
+                        </ul>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/registration}">Inscription</a></li>
+                    <li sec:authorize="!isAuthenticated()"><a href="#"
+                            th:href="@{/registration/professionnel}">Professionnel</a></li>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a sec:authorize="hasRole('ADMIN')" href="#" class="dropdown-toggle"
+                            data-toggle="dropdown">Utilisateurs<b class="caret"></b></a>
+                        <ul sec:authorize="hasRole('ADMIN')" class="dropdown-menu">
+                            <li sec:authorize="hasRole('ADMIN')"><a href="#" th:href="@{/member}">Liste</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="#" th:href="@{/member/add}">Ajouter</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" sec:authorize="isAuthenticated()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ESGI AL CC1<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" th:href="@{/acte/add}">Enregistrer</a></li>
+                            <li><a href="#" th:href="@{/acte}">Liste sauvegardée</a></li>
+                            <li><a href="#" th:href="@{/acte/ok}">Liste Validée</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="#" th:href="@{/acte/traite/no}">Liste Non
+                                    Traitée</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a href="#" th:href="@{/acte/traite}">Liste Traitée</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <div class="pull-left " sec:authorize="isAuthenticated()">
+                        <img src="/images/avatar5.png" class="img-circle">
+                    </div>
+                    <li>
+                        <form method="POST" th:action="@{/logout}" sec:authorize="isAuthenticated()">
+                            <button class="btn btn-default navbar-btn"><i class="fa fa-sign-out-alt"
+                                    aria-hidden="true"></i>Déconnexion</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="container">
+
+    </div>
+    <!-- /.container -->
+
+
+    <nav th:replace="~{jsfooter :: body"></nav>
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+    <head th:replace="~{base :: head(title = 'Utilisateur')}">
+    </head>
+
+    <body>
+
+        <nav th:replace="~{base :: navigation}"></nav>
+        <div class="container">
+            <div> <strong><b th:text="${execInfo.now.time}"></b></strong></div>
+            <p> <br/></p>
+
+            <div class="row">
+                <h3>Liste des utilisateurs</h3>
+                <hr>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <a class="btn btn-default"  th:href="@{/member/add}"><i class="fa fa-user-plus" aria-hidden="true"></i>Ajouter un utilisateur</a>
+                        <a class="btn btn-default"  th:href="@{/member}"><i class="fa fa-redo-alt" aria-hidden="true"></i>Actualiser</a>
+                        <a class="btn btn-default"  th:href="@{/getUsersListAsPdf}" style="float: right"><i class="fa fa-file-pdf"></i>Télécharger PDF</a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container" >
+                            <form th:action="@{/member}" method="get" style="float: right;margin-right: 30px;">
+                                <label>Mot Clé:</label>
+                                <input type="text" name="motCle"/>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search" ></i>Chercher</button>
+                            </form>
+                        </div>
+                        <br>
+                        <br>
+                        <div th:if="${param.success}">
+                            <div class="alert alert-success" style="text-align: center">
+                                Le compte a été supprimé avec succès
+                            </div>
+                        </div>
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">
+                                Impossible de supprimer ce compte
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <tr style="background:  #df691a;">
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Civilté</th>
+                                <th>E-mail</th>
+                                <th>Date enregistrement</th>
+                                <th colspan="3" style="text-align: center">Action</th>
+                            </tr>
+                            <tr th:each=" e : ${listUser}">
+                                <td th:text=${e.id}></td>
+                                <td th:text=${e.firstName}></td>
+                                <td th:text=${e.lastName}></td>
+                                <td th:text=${e.civilite}></td>
+                                <td th:text=${e.email}></td>
+                                <td th:text="${#dates.format(e.dateEnreg, 'dd-MM-yyyy  HH:mm')}"></td>
+                                <td>
+                                    <a class="btn btn-success"  th:href="@{/actes(code=${e.id})}"><i class="fa fa-info-circle"></i>Acte</a>
+                                    <a class="btn btn-warning"   th:href="@{/member/infos/{id}(id=${e.id})}"><i class="fa fa-pen"></i>Editer</a>
+                                     <a class="btn" style="background-color: #df691a" th:href="@{/member/pass/{id}(id=${e.id})}"><i class="fas fa-unlock-alt"></i>Password</a>
+                                    <a class="btn btn-danger" th:href="@{/member/delete/{id}(id=${e.id})}"><i class="fa fa-trash-alt"></i>Supprimer</a>
+                                </td>
+                            </tr>	
+                        </table>
+                        <div>
+                            <ul class="nav nav-pills">
+                                <li th:class="${status.index == pageCourante}? 'active': ''" th:each="p, status:${pages}">
+                                    <a th:href="@{user(page=${status.index}, motCle=${motCle})}" th:text="${status.index}"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div	 th:replace="~{fragments/jsfooter :: body}"></div>
+
+    </body>
+
+</html>

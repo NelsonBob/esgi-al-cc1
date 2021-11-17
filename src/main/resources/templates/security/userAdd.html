@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="~{base :: head(title = 'Information du compte')}">
+</head>
+
+<body>
+
+    <nav th:replace="~{base :: navigation}"></nav>
+    <div class="container">
+        <div> <strong><b th:text="${execInfo.now.time}"></b></strong></div>
+        <div class="row">
+            <div class="col-md-6">
+                <p> <br /></p>
+                <form th:action="@{/member/add}" th:object="${userFor}" method="post" class="form-signin">
+
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Veillez bien remplir le formulaire svp !
+                        </div>
+                    </div>
+                    <fieldset>
+                        <h3>Ajouter un nouvel utilisateur</h3>
+                        <hr>
+                        <label for="firstName">Nom</label>:
+                        <input type="text" id="firstName" class="form-control" th:field="*{firstName}"
+                            placeholder="Nom" />
+                        <label for="lastName">Prenom</label>:
+                        <input type="text" id="lastName" class="form-control" th:field="*{lastName}"
+                            placeholder="Prenom" />
+
+                        <label for="civilite">Civilté</label>
+                        <select id="civilite" class="form-control" th:field="*{civilite}">
+                            <option th:each="p:${listCivilite}" th:value="${p}" th:text="${p}"></option>
+                        </select>
+                        <label for="dateNaissance">Date de Naissance</label>:
+                        <input type="date" id="dateNaissance" class="form-control" th:field="*{dateNaissance}"
+                            required />
+                        <label for="telephone">Téléphone</label>
+                        <input type="text" id="telephone" name="telephone" class="form-control"
+                            th:field="*{telephone}" />
+                        <label for="email">Adresse e-mail</label>
+                        <input type="email" id="email" name="email" class="form-control" th:field="*{email}"
+                            th:classappend="${#fields.hasErrors('email')}? 'has-error':''" placeholder="Adresse e-mail"
+                            required />
+                        <p class="error-message" th:each="error: ${#fields.errors('email')}" th:text="${error}">
+                            Validation error</p>
+                        <label for="password">Mot de passe</label>:
+                        <input type="password" id="password" name="password" class="form-control" th:field="*{password}"
+                            placeholder="Le mot de passe" />
+
+                        <label for="nationalite">Nationalite</label>:
+                        <input type="text" id="nationalite" class="form-control" th:field="*{nationalite}"
+                            placeholder="Nationalite" />
+
+                        <label for="profession">Profession</label>:
+                        <input type="text" id="profession" class="form-control" th:field="*{profession}"
+                            placeholder="Profession" />
+
+                        <div class="form-actions">
+                            <br />
+                            <a th:href="@{/member}" class="btn btn-primary"><i class="fa fa-arrow-left"></i>Retour</a>
+                            <button type="submit" class="btn btn-success" style="margin-left:70px;"><i
+                                    class="fa fa-check"></i>Enregistrer</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+                <p> <br /><br /><br />
+                <div th:if="${param.success}">
+                    <div class="alert alert-success" style="text-align: center">
+                        Vous avez ajouter un nouvel utilisateur
+                    </div>
+                </div>
+                </p>
+                <h3>Informations sur le dernier utilisateur crée</h3>
+                <hr>
+                <div class="list-group">
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Nom d'utilisateur</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.firstName}"></p>
+                    </span>
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Prenom</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.lastName}"></p>
+                    </span>
+
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Civilté</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.civilite}"></p>
+                    </span>
+
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Email</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.email}"></p>
+                    </span>
+                    <span class="list-group-item">
+                        <h4 class="list-group-item-heading">Téléphone</h4>
+                        <p class="list-group-item-text" th:text="${memberForm.telephone}"></p>
+                    </span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div th:replace="~{fragments/jsfooter :: body}"></div>
+
+</body>
+
+</html>
